@@ -11,10 +11,11 @@ class CartController extends Controller
     public function index(Request $request) {
         $cart_id = $request->cookie('cart_id');
         if (!empty($cart_id)) {
-            $products = Cart::findOrFail($cart_id)->products;
-            return view('cart', compact('products'));
+            $products = Cart::with('products')->findOrFail($cart_id);
+            return view('cart')->with('products',$products);
+            // return response()->json($products);
         } else {
-            abort(404);
+            return view('cart');
         }
         return view('cart');
     }
@@ -46,6 +47,6 @@ class CartController extends Controller
             $cart->products()->attach($id, ['quantity' => $quantity]);
         }
         // выполняем редирект обратно на страницу, где была нажата кнопка «В корзину»
-        return view('cart')->withCookie(cookie('cart_id', $cart_id, 525600));
+        return back()->withCookie(cookie('cart_id', $cart_id, 525600));
     }
 }

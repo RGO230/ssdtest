@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-@if(count($products))
+
+@if(count($products->products))
 @php
 $cartCost=0;
 @endphp
@@ -31,7 +32,7 @@ $cartCost=0;
                                 <th>Quantity</th>
                                 <th>Total</th>
                             </tr>
-                            @foreach($products as $product)
+                            @foreach($products->products as $product)
                             @php
                             $itemPrice=$product->price;
                             $itemQuantity=$product->pivot->quantity;
@@ -68,6 +69,7 @@ $cartCost=0;
 
                             <a href="/cart/checkout" class="btn btn-primary py-3 px-4">Proceed to Checkout</a>
                             </p>
+</table>
                 </div>
             </div>
         </div>
