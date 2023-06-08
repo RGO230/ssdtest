@@ -61,7 +61,7 @@ $cartCost=0;
                                     </div>
                                 </td>
                                 @endforeach
-                                <td class="total">{{$cartCost}}/td>
+                                <td class="total">{{$cartCost}}</td>
                             </tr><!-- END TR-->
                             @else
                             <p> Корзина пуста </p>
