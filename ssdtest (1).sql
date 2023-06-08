@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Июн 07 2023 г., 23:57
+-- Время создания: Июн 08 2023 г., 03:55
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -32,6 +32,42 @@ CREATE TABLE `carts` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `carts`
+--
+
+INSERT INTO `carts` (`id`, `created_at`, `updated_at`) VALUES
+(1, '2023-06-07 21:16:47', '2023-06-07 21:16:47'),
+(2, '2023-06-07 21:17:48', '2023-06-07 21:17:48'),
+(3, '2023-06-07 21:21:09', '2023-06-07 21:21:09'),
+(4, '2023-06-07 21:21:40', '2023-06-07 21:21:40'),
+(5, '2023-06-07 21:22:17', '2023-06-07 21:22:17'),
+(6, '2023-06-07 21:22:42', '2023-06-07 21:22:42'),
+(7, '2023-06-07 21:24:42', '2023-06-07 21:54:55');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `cart_products`
+--
+
+CREATE TABLE `cart_products` (
+  `id` bigint UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `product_id` bigint UNSIGNED NOT NULL,
+  `cart_id` bigint UNSIGNED NOT NULL,
+  `quantity` int UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `cart_products`
+--
+
+INSERT INTO `cart_products` (`id`, `created_at`, `updated_at`, `product_id`, `cart_id`, `quantity`) VALUES
+(1, NULL, NULL, 20, 7, 39),
+(2, NULL, NULL, 23, 7, 8);
 
 -- --------------------------------------------------------
 
@@ -96,8 +132,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (6, '2023_06_02_183751_create_categories_table', 1),
 (7, '2023_06_02_183752_create_products_table', 1),
 (8, '2023_06_03_110423_create_photos_table', 1),
-(9, '2023_06_07_192926_create_carts_table', 2),
-(10, '2023_06_07_195227_add_cart_to_product_table', 2);
+(11, '2023_06_07_192926_create_carts_table', 2),
+(12, '2023_06_07_235510_create_cart_products_table', 2);
 
 -- --------------------------------------------------------
 
@@ -243,6 +279,14 @@ ALTER TABLE `carts`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `cart_products`
+--
+ALTER TABLE `cart_products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cart_products_cart_id_foreign` (`cart_id`),
+  ADD KEY `cart_products_product_id_foreign` (`product_id`);
+
+--
 -- Индексы таблицы `categories`
 --
 ALTER TABLE `categories`
@@ -310,7 +354,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT для таблицы `cart_products`
+--
+ALTER TABLE `cart_products`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `categories`
@@ -328,7 +378,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT для таблицы `personal_access_tokens`
@@ -357,6 +407,13 @@ ALTER TABLE `users`
 --
 -- Ограничения внешнего ключа сохраненных таблиц
 --
+
+--
+-- Ограничения внешнего ключа таблицы `cart_products`
+--
+ALTER TABLE `cart_products`
+  ADD CONSTRAINT `cart_products_cart_id_foreign` FOREIGN KEY (`cart_id`) REFERENCES `carts` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `cart_products_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `photos`

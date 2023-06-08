@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,11 @@ Route::get('/', function () {
 Route::get('/home', [ProductController::class, 'show'])->name('home');
 Route::get('/shop', [ProductController::class, 'shop']);
 Route::get('/productsingle/{product}',[ProductController::class,'singlePage']);
+Route::get('/cart/index', [CartController::class,'index']);
+Route::get('/cart/checkout',[CartController::class,'checkout']);
+Route::post('/cart/add/{id}', [CartController::class,'add'])
+    ->where('id', '[0-9]+')
+    ->name('cart.add');
 
 Auth::routes();
 Route::middleware(['auth'])->group(function () {

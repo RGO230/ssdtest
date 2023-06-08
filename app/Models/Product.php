@@ -36,4 +36,7 @@ class Product extends Model
         }
         $this->photoes()->whereNotIn('id', $savedFiles)->delete();
       }
+      public function carts() {
+        return $this->belongsToMany(Cart::class)->withPivot('quantity');
+    }
 }
